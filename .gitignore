@@ -1,0 +1,27 @@
+#
+# Project specific excludes
+#
+
+tomcat
+
+#
+# Default excludes
+#
+
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.tar
+*.zip
+*.war
+*.ear
+*.class
+.gradle/
+.settings/
+.classpath
+.project
+build/
+bin/
+release.properties
