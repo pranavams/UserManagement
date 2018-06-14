@@ -27,11 +27,16 @@ public class UserDAO {
 	}
 	
 	private UserDE populateUserDeFromUserBO(UserBO user) {
-		UserDE userDE = new UserDE();
-		userDE.setName(user.getName());
-		userDE.setEmailId(user.getEmailAddress());
-		userDE.setPassword(user.getPassword());
-		userDE.setLastLogin(new Timestamp(new Date().getTime()));
+		UserDE userDE = null;
+		try{
+			userDE = new UserDE();
+			userDE.setName(user.getName());
+			userDE.setEmailId(user.getEmailAddress());
+			userDE.setPassword(user.getPassword());
+			userDE.setLastLogin(new Timestamp(new Date().getTime()));
+		}catch(Exception e){
+			new ExceptionHandler().throwBusinessException(CLASS_NAME, e.getMessage(), e);
+		}
 		return userDE;
 	}
 	
@@ -128,21 +133,4 @@ public class UserDAO {
 		return de;
 	}
 	
-	public UserDE isAvailableUser(String emailId, String password) {
-		UserDE de = null;
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			session.beginTransaction();
-			String hql = UserHQLConstants.USER_VALIDATION;
-			@SuppressWarnings("rawtypes")
-			Query query = session.createQuery(hql).setParameter("emailId", emailId).setParameter("password", password);
-			Object queryResult = query.uniqueResult();
-			de = (UserDE) queryResult;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return de;
-	}
 }
